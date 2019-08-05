@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 /** Express App */
 const app = express();
@@ -13,6 +14,7 @@ const CustomersController = require('./controllers/Customers');
 const CustomersAddressController = require('./controllers/CustomersAddress');
 
 app.use(express.json());
+app.use(cors());
 app.use(new HealthCheckController(express.Router()).router);
 app.use(new LevelsController(express.Router()).router);
 app.use(new CustomersController(express.Router()).router);
