@@ -10,11 +10,17 @@ const one = async (id) => {
   return item;
 };
 
+const byCompany = async (company) => {
+  const list = await Levels.findAll({ where: { company } });
+  return list;
+};
+
 const store = async (provider) => {
   const item = await Levels.create({
     name: provider.name,
     description: provider.description,
     discount: provider.discount,
+    company: provider.company,
   });
   return item;
 };
@@ -24,6 +30,7 @@ const update = async (id, provider) => {
     name: provider.name,
     description: provider.description,
     discount: provider.discount,
+    company: provider.company,
   }, { where: { id } });
 
   if (item[0] === 1) {
@@ -46,6 +53,7 @@ const destroy = async (id) => {
 
 module.exports = {
   all,
+  byCompany,
   one,
   store,
   update,

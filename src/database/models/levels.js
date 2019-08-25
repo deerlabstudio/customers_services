@@ -3,7 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const Levels = sequelize.define('Levels', {
     name: DataTypes.STRING,
     description: DataTypes.STRING,
-    discount: DataTypes.FLOAT
+    discount: DataTypes.FLOAT,
+    company: DataTypes.INTEGER
   }, {});
   Levels.associate = function(models) {
     // associations can be defined here

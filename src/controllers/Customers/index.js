@@ -5,6 +5,7 @@ class CustomersController {
   constructor(router) {
     this.router = router;
     this.router.get('/customers', this.getAllCustomers);
+    this.router.get('/customersByCompany', this.getCustomersByCompany);
     this.router.get('/customers/:id', this.getOneCustomers);
     this.router.post('/customers', this.storeCustomers);
     this.router.put('/customers/:id', this.updateCustomers);
@@ -14,6 +15,16 @@ class CustomersController {
   async getAllCustomers(req, res, next) {
     try {
       const list = await customersRepository.all();
+      res.json(list);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getCustomersByCompany(req, res, next) {
+    try {
+      const { company } = req.query;
+      const list = await customersRepository.byCompany(company);
       res.json(list);
     } catch (error) {
       next(error);

@@ -1,7 +1,22 @@
-const { Customers } = require('../database/models');
+const { Customers, Levels } = require('../database/models');
 
 const all = async () => {
   const list = await Customers.findAll();
+  return list;
+};
+
+const byCompany = async (company) => {
+  const list = await Customers.findAll({
+    where: {
+      company,
+    },
+    include: [
+      {
+        model: Levels,
+        as: 'level',
+      },
+    ],
+  });
   return list;
 };
 
@@ -56,6 +71,7 @@ const destroy = async (id) => {
 
 module.exports = {
   all,
+  byCompany,
   one,
   store,
   update,

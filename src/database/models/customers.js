@@ -6,13 +6,14 @@ module.exports = (sequelize, DataTypes) => {
     phone: DataTypes.STRING,
     avatar: DataTypes.STRING,
     code: DataTypes.STRING,
-    company: DataTypes.BOOLEAN,
+    isCompany: DataTypes.BOOLEAN,
     status: DataTypes.BOOLEAN,
-    levelsId: DataTypes.INTEGER
+    levelsId: DataTypes.INTEGER,
+    company: DataTypes.INTEGER
   }, {});
   Customers.associate = function(models) {
     // associations can be defined here
-    Customers.belongsTo(models.Levels, { as: "levels", foreignKey: { name:"levelsId", field: "levelsId", allowNull: true }});
+    Customers.belongsTo(models.Levels, { as: "level", foreignKey: { name:"levelsId", field: "levelsId", allowNull: true }});
     Customers.hasMany(models.CustomersAddress, {
       foreignKey: {
         name:"customersId",

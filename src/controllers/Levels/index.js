@@ -5,6 +5,7 @@ class LevelsController {
   constructor(router) {
     this.router = router;
     this.router.get('/levels', this.getAllLevels);
+    this.router.get('/levelsByCompany', this.getLevelsByCompany);
     this.router.get('/levels/:id', this.getOneLevels);
     this.router.post('/levels', this.storeLevels);
     this.router.put('/levels/:id', this.updateLevels);
@@ -14,6 +15,16 @@ class LevelsController {
   async getAllLevels(req, res, next) {
     try {
       const list = await levelsRepository.all();
+      res.json(list);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getLevelsByCompany(req, res, next) {
+    try {
+      const { company } = req.query;
+      const list = await levelsRepository.byCompany(company);
       res.json(list);
     } catch (error) {
       next(error);
