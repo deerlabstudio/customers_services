@@ -6,6 +6,7 @@ class CustomersController {
     this.router = router;
     this.router.get('/customers', this.getAllCustomers);
     this.router.get('/customersByCompany', this.getCustomersByCompany);
+    this.router.get('/customersByCompanyAndText', this.getCustomersByTextAndCompany);
     this.router.get('/customers/:id', this.getOneCustomers);
     this.router.post('/customers', this.storeCustomers);
     this.router.put('/customers/:id', this.updateCustomers);
@@ -25,6 +26,16 @@ class CustomersController {
     try {
       const { company } = req.query;
       const list = await customersRepository.byCompany(company);
+      res.json(list);
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  async getCustomersByTextAndCompany(req, res, next) {
+    try {
+      const { company, text } = req.query;
+      const list = await customersRepository.findByTextAndCompany(company, text);
       res.json(list);
     } catch (error) {
       next(error);

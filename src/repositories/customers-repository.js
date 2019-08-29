@@ -1,3 +1,4 @@
+const { Op } = require('sequelize');
 const { Customers, Levels } = require('../database/models');
 
 const all = async () => {
@@ -9,6 +10,25 @@ const byCompany = async (company) => {
   const list = await Customers.findAll({
     where: {
       company,
+    },
+    include: [
+      {
+        model: Levels,
+        as: 'level',
+      },
+    ],
+  });
+  return list;
+};
+
+const findByTextAndCompany = async (company, text) => {
+  const list = await Customers.findAll({
+    where: {
+      company,
+      [Op.or]: [
+        { name: { [Op.like]: `%${text}%` } },
+        { code: { [Op.like]: `%${text}%` } },
+      ],
     },
     include: [
       {
@@ -33,6 +53,7 @@ const store = async (provider) => {
     avatar: '',
     code: provider.code,
     company: provider.company,
+    isCompany: provider.isCompany,
     status: true,
     levelsId: provider.levelsId,
   });
@@ -47,6 +68,7 @@ const update = async (id, provider) => {
     avatar: provider.avatar,
     code: provider.code,
     company: provider.company,
+    isCompany: provider.isCompany,
     status: provider.status,
     levelsId: provider.levelsId,
   }, { where: { id } });
@@ -72,6 +94,7 @@ const destroy = async (id) => {
 module.exports = {
   all,
   byCompany,
+  findByTextAndCompany,
   one,
   store,
   update,
